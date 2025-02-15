@@ -1,11 +1,11 @@
 """
-Document Summary Creator
+DocSynth
 Author: T. Landon Love
 Company: 12Stone Designs
 Email: 12stonedesigns@gmail.com
 Copyright © 2023 12Stone Designs. All rights reserved.
 
-A sophisticated text summarization tool that processes documents
+A sophisticated document synthesis tool that processes documents
 and generates concise summaries while preserving key information.
 """
 
@@ -105,7 +105,7 @@ def save_summary(summary, output_path):
 
 def main():
     """Main execution function for the document summarizer."""
-    parser = argparse.ArgumentParser(description="Document Summary Creator")
+    parser = argparse.ArgumentParser(description="DocSynth")
     parser.add_argument("filepath", type=str, help="Input file path")
     parser.add_argument("--compression_ratio", type=float, default=0.3, help="Compression ratio for summary")
     parser.add_argument("--min_sentences", type=int, default=5, help="Minimum number of sentences in summary")

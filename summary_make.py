@@ -1,12 +1,12 @@
 """
-Document Summary Creator - Summarization Module
+DocSynth - Summarization Module
 Author: T. Landon Love
 Company: 12Stone Designs
 Email: 12stonedesigns@gmail.com
 Copyright © 2023 12Stone Designs. All rights reserved.
 
-This module implements the core summarization logic using
-the LexRank algorithm with enhanced preprocessing.
+This module implements the core document synthesis logic using
+the LexRank algorithm with enhanced preprocessing capabilities.
 """
 
 from preprocessing import DocumentProcessor

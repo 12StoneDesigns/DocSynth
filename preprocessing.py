@@ -1,12 +1,13 @@
 """
-Document Summary Creator - Text Preprocessing Module
+DocSynth - Text Preprocessing Module
 Author: T. Landon Love
 Company: 12Stone Designs
 Email: 12stonedesigns@gmail.com
 Copyright © 2023 12Stone Designs. All rights reserved.
 
-This module handles text preprocessing and document analysis
-for the document summarization process.
+This module handles advanced text preprocessing and linguistic analysis
+for the document synthesis process, ensuring optimal input preparation
+for accurate summarization.
 """
 
 import spacy

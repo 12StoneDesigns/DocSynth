@@ -2,3 +2,5 @@ sumy>=0.11.0
 spacy>=3.6.0
 neologdn>=0.5.1
 typing-extensions>=4.7.1
+PyMuPDF
+python-docx

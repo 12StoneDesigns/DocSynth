@@ -17,7 +17,7 @@ from typing import List, Optional
 class DocumentProcessor:
     """Handles document preprocessing and linguistic analysis."""
     
-    def __init__(self, model: str = "en_core_web_sm"):
+    def __init__(self, model: str = "en_core_web_trf"):
         """Initialize the document processor with specified language model.
         
         Args:
@@ -40,8 +40,28 @@ class DocumentProcessor:
         Returns:
             str: Preprocessed and normalized text
         """
-        # Remove excessive whitespace and normalize line breaks
-        text = ' '.join(text.split())
+        # Preserve paragraph structure
+        paragraphs = text.split('\n\n')
+        processed_paragraphs = []
+        
+        for para in paragraphs:
+            # Clean whitespace within paragraph
+            para = ' '.join(para.split())
+            
+            # Ensure proper sentence breaks
+            para = para.replace('. ', '.\n')
+            para = para.replace('! ', '!\n')
+            para = para.replace('? ', '?\n')
+            
+            # Handle special cases
+            para = para.replace('.\n"', '." ')
+            para = para.replace('!\n"', '!" ')
+            para = para.replace('?\n"', '?" ')
+            
+            processed_paragraphs.append(para)
+        
+        # Join paragraphs with double newlines
+        text = '\n\n'.join(processed_paragraphs)
         
         # Normalize text using neologdn
         text = neologdn.normalize(text)
@@ -57,6 +77,15 @@ class DocumentProcessor:
         Returns:
             List[spacy.tokens.span.Span]: List of sentence objects
         """
+        # Add extra newlines before common section markers to help with sentence splitting
+        markers = ["Key Features", "Common Applications", "In conclusion"]
+        for marker in markers:
+            text = text.replace(marker, f"\n{marker}")
+        
+        # Add newlines before numbered points
+        for i in range(1, 10):
+            text = text.replace(f" {i}.", f"\n{i}.")
+        
         # Process the text with spaCy
         self._processed_doc = self.nlp(text)
         self._sentence_objects = list(self._processed_doc.sents)
@@ -73,13 +102,36 @@ class DocumentProcessor:
             raise RuntimeError("No processed sentences available. Call extract_sentences() first.")
         
         corpus = []
+        current_sentence = []
+        
         for sent in self._sentence_objects:
-            # Extract tokens while preserving important linguistic features
+            # Check if this is a new section or numbered point
+            text = sent.text.strip()
+            is_new_section = (
+                any(marker in text for marker in ["Key Features", "Common Applications", "In conclusion"]) or
+                any(text.startswith(str(i) + ".") for i in range(1, 10))
+            )
+            
+            # If it's a new section, save current sentence and start new one
+            if is_new_section and current_sentence:
+                corpus.append(" ".join(current_sentence))
+                current_sentence = []
+            
+            # Add tokens to current sentence
             tokens = [
                 token.text for token in sent
                 if not (token.is_space or token.is_punct)
             ]
-            corpus.append(" ".join(tokens))
+            current_sentence.extend(tokens)
+            
+            # If sentence ends with period, save it
+            if sent.text.strip().endswith("."):
+                corpus.append(" ".join(current_sentence))
+                current_sentence = []
+        
+        # Add any remaining sentence
+        if current_sentence:
+            corpus.append(" ".join(current_sentence))
         
         return corpus
 

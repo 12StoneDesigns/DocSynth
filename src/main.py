@@ -9,7 +9,7 @@ A sophisticated document synthesis tool that processes documents
 and generates concise summaries while preserving key information.
 """
 
-from summary_make import SummaryCreator
+from src.summary_make import SummaryCreator
 import os
 import sys
 import argparse

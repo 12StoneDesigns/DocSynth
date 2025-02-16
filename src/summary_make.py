@@ -9,7 +9,7 @@ This module implements the core document synthesis logic using
 the LexRank algorithm with enhanced preprocessing capabilities.
 """
 
-from preprocessing import DocumentProcessor
+from src.preprocessing import DocumentProcessor
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.utils import get_stop_words
